@@ -1,0 +1,45 @@
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    # Configura serviços, como o PostgreSQL
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: orderservice
+          POSTGRES_PASSWORD: 123456
+          POSTGRES_DB: orderservice
+        ports:
+          - 5432:5432
+        # Verifica se o banco está pronto
+        options: >-
+          --health-cmd "pg_isready -U orderservice"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Build and Test with Maven
+      env:
+        SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/orderservice
+        SPRING_DATASOURCE_USERNAME: orderservice
+        SPRING_DATASOURCE_PASSWORD: 123456
+        SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+      run: mvn -B verify --file pom.xml
