@@ -1,27 +1,28 @@
+version: '3.8'
+
 services:
   api:
     build: .
     image: orderservice
+    container_name: orderservice_api
     ports:
       - "8082:8080"
     depends_on:
       db:
         condition: service_healthy
     restart: always
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/orderservice
-      SPRING_DATASOURCE_USERNAME: orderservice
-      SPRING_DATASOURCE_PASSWORD: 123456
-      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+    env_file:
+      - .env
+
   db:
     image: postgres:16
-    environment:
-      POSTGRES_USER: orderservice
-      POSTGRES_PASSWORD: 123456
-      POSTGRES_DB: orderservice
+    container_name: orderservice_db
+    restart: always
     ports:
       - "5433:5432"
+    env_file:
+      - .env
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U orderservice"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
       interval: 10s
       retries: 5
