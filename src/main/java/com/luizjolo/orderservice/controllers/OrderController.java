@@ -1,19 +1,20 @@
 package com.luizjolo.orderservice.controllers;
 
 
+import com.luizjolo.orderservice.domain.order.dtos.CreateOrderDto;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
 
-    @GetMapping
-    ResponseEntity<String> helloWorld(){
-        return ResponseEntity.ok("teste");
-    }
+
+//    @PostMapping
+//    public ResponseEntity create(@RequestBody CreateOrderDto createOrderDto){
+//
+//
+//
+//    }
 
 }
