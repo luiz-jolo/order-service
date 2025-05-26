@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 public record CreateOrderDto(
 
         @NotNull(message = "UserId is mandatory")
-        Long user_id,
+        Long userId,
 
         @NotBlank(message = "Asset is mandatory")
         String asset,

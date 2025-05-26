@@ -3,6 +3,7 @@ package com.luizjolo.orderservice.domain.order;
 import com.luizjolo.orderservice.domain.order.enums.OrderStatus;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -17,7 +18,10 @@ public class Order {
     @Column(nullable = false, length = 10)
     private String asset;
 
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false)
+    private BigDecimal amount;
+
+    @Column(nullable = false)
     private Long userId;
 
     @Column(nullable = false)
@@ -26,12 +30,14 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    public Order(String asset, Long userId){
+    public Order(String asset, Long userId, BigDecimal amount){
         this.asset = asset;
         this.userId = userId;
+        this.amount = amount;
         this.status = OrderStatus.CREATED;
         this.createdAt = LocalDateTime.now();
     }
+    public Order(){}
 
     public UUID getId() {
         return id;
@@ -48,6 +54,10 @@ public class Order {
     public void setAsset(String asset) {
         this.asset = asset;
     }
+
+    public BigDecimal getAmount() { return amount; }
+
+    public void setAmount(BigDecimal amount) { this.amount = amount; }
 
     public Long getUserId() {
         return userId;
